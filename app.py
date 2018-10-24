@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request, json
-
+import os
 import pymongo
 from bson.objectid import ObjectId
 
@@ -21,8 +21,9 @@ def hello_world():
 @app.route('/api/v1/resources/identities', methods=['GET'])
 def api_all():
     res_id = request.url.rsplit('/', 1)[1]
-    
-    myclient = pymongo.MongoClient("mongodb://mongodb:27017/")
+    username = os.environ.get("USER")
+    password = os.environ.get("PASS")
+    myclient = pymongo.MongoClient("mongodb://%s:%s@mongodb:27017/" % (username,password))
     mydb = myclient["peopledb"]
 
     mycol = mydb["identities"]
@@ -36,7 +37,9 @@ def api_all():
 @app.route('/api/v1/resources/identities', methods=['POST'])
 def api_test():
     #mongodb:27017
-    myclient = pymongo.MongoClient("mongodb://mongodb:27017/")
+    username = os.environ.get("USER")
+    password = os.environ.get("PASS")
+    myclient = pymongo.MongoClient("mongodb://%s:%s@mongodb:27017/" % (username,password))
     mydb = myclient["peopledb"]
 
     mycol = mydb["identities"]
